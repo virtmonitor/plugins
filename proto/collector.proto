@@ -1,0 +1,103 @@
+syntax = "proto3";
+package protocol;
+
+message CollectRequest {
+    bool cpu = 1;
+    bool disk = 2;
+    bool network = 3;
+}
+
+message Domain {
+    string Name = 1;
+    uint64 ID = 2;
+    string Hypervisor = 3;
+    string UUID = 4;
+    string OStype = 5;
+    int64 Time = 6;
+    int32 Flags = 7;
+    repeated DomainCPU CPU = 8;
+    repeated DomainDisk Disk = 9;
+    repeated DomainNetwork Network = 10;
+}
+
+message DomainCPU {
+    uint64 ID = 1;
+    int32 Flags = 2;
+    double Time = 3;
+    double Idle = 4;
+    bool IdleSet = 5;
+    double Idle1 = 6;
+    double Idle5 = 7;
+    double Idle15 = 8;
+}
+
+message DomainDisk {
+    string Name = 1;
+    bool ReadOnly = 2;
+    bool IsDisk = 3;
+    bool IsCDRom = 4;
+    BlockIO Read = 5;
+    BlockIO Write = 6;
+    BlockIO Flush = 7;
+}
+
+message BlockIO {
+    uint64 Operations = 1;
+    uint64 Bytes = 2;
+    uint64 Sectors = 3;
+    bool Absolute = 4;
+}
+
+message DomainNetwork {
+    string Name = 1;
+    NetworkHWAddr Mac = 2;
+    repeated string Bridges = 3;
+    NetworkIO RX = 4;
+    NetworkIO TX = 5;
+}
+
+message NetworkHWAddr {
+    string Mac = 1;
+}
+
+message NetworkIO {
+    uint64 Bytes = 1;
+    uint64 Packets = 2;
+    uint64 Errors = 3;
+    uint64 Drops = 4;
+}
+
+message Suspend {
+    string uuid = 1;
+    string reason = 2;
+    int32 duration = 3;
+}
+
+message Unsuspend {
+    string uuid = 1;
+}
+
+message LimitCPU {}
+message UnlimitCPU {}
+
+message LimitDisk {}
+message UnlimitDisk {}
+
+message LimitNetwork {}
+message UnlimitNetwork {}
+
+message BlockSMTP {
+    string uuid = 1;
+    string type = 2;
+    string value = 3;
+}
+
+message UnblockSMTP {
+    string uuid = 1;
+    string type = 2;
+    string value = 3;
+}
+
+service Driver {
+    rpc Collect(CollectRequest) returns (stream Domain);
+}
