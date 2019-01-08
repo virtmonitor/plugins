@@ -46,7 +46,7 @@ type DriverClient struct {
 }
 
 //Collect Collects domain statistics from underlying plugin interface
-func (m *DriverClient) Collect(cpu, disk, network bool) ([]*proto.Domain, error) {
+func (m *DriverClient) Collect(cpu, disk, network bool) (map[driver.DomainID]*driver.Domain, error) {
 	resp, err := m.client.Collect(context.Background(), &proto.CollectRequest{
 		Cpu:     cpu,
 		Disk:    disk,
@@ -72,7 +72,10 @@ func (m *DriverClient) Collect(cpu, disk, network bool) ([]*proto.Domain, error)
 		domains = append(domains, domain)
 	}
 
-	return domains, nil
+	x := make(map[driver.DomainID]*driver.Domain)
+	return x, nil
+
+	//return domains, nil
 }
 
 func (m *DriverClient) Name() (*proto.NameResponse, error) {
