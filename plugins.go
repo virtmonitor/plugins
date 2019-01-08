@@ -3,8 +3,8 @@ package plugins
 import (
 	"context"
 	"errors"
-	"fmt"
 	"io"
+	"log"
 
 	plugin "github.com/hashicorp/go-plugin"
 	driver "github.com/virtmonitor/driver"
@@ -82,7 +82,8 @@ func (m *DriverClient) Collect(cpu, disk, network bool) (map[driver.DomainID]*dr
 func (m *DriverClient) Name() driver.DomainHypervisor {
 	resp, err := m.client.Name(context.Background(), &proto.Empty{})
 	if err != nil {
-		return driver.DomainHypervisor(fmt.Sprintf("%s error: %v", resp.Name, err))
+		log.Println("Name error:", err)
+		return driver.DomainHypervisor("")
 	}
 	return driver.DomainHypervisor(resp.Name)
 }
@@ -90,6 +91,7 @@ func (m *DriverClient) Name() driver.DomainHypervisor {
 func (m *DriverClient) Detect() bool {
 	resp, err := m.client.Detect(context.Background(), &proto.Empty{})
 	if err != nil {
+		log.Println("Detect error:", err)
 		return false
 	}
 	return resp.IsHypervisor
