@@ -78,12 +78,12 @@ func (m *DriverClient) Collect(cpu, disk, network bool) (map[driver.DomainID]*dr
 	//return domains, nil
 }
 
-func (m *DriverClient) Name() string {
+func (m *DriverClient) Name() driver.DomainHypervisor {
 	resp, err := m.client.Name(context.Background(), &proto.Empty{})
 	if err != nil {
-		return ""
+		return driver.DomainHypervisor("")
 	}
-	return resp.Name
+	return driver.DomainHypervisor(resp.Name)
 }
 
 func (m *DriverClient) Detect() bool {
