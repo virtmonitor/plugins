@@ -3,6 +3,7 @@ package plugins
 import (
 	"context"
 	"errors"
+	"fmt"
 	"io"
 
 	plugin "github.com/hashicorp/go-plugin"
@@ -81,7 +82,7 @@ func (m *DriverClient) Collect(cpu, disk, network bool) (map[driver.DomainID]*dr
 func (m *DriverClient) Name() driver.DomainHypervisor {
 	resp, err := m.client.Name(context.Background(), &proto.Empty{})
 	if err != nil {
-		return driver.DomainHypervisor("")
+		return driver.DomainHypervisor(fmt.Sprintf("%s error: %v", resp.Name, err))
 	}
 	return driver.DomainHypervisor(resp.Name)
 }
