@@ -78,20 +78,20 @@ func (m *DriverClient) Collect(cpu, disk, network bool) (map[driver.DomainID]*dr
 	//return domains, nil
 }
 
-func (m *DriverClient) Name() (*proto.NameResponse, error) {
+func (m *DriverClient) Name() string {
 	resp, err := m.client.Name(context.Background(), &proto.Empty{})
 	if err != nil {
-		return nil, err
+		return ""
 	}
-	return &proto.NameResponse{Name: resp.Name}, nil
+	return resp.Name
 }
 
-func (m *DriverClient) Detect() (*proto.DetectResponse, error) {
+func (m *DriverClient) Detect() bool {
 	resp, err := m.client.Detect(context.Background(), &proto.Empty{})
 	if err != nil {
-		return nil, err
+		return false
 	}
-	return &proto.DetectResponse{IsHypervisor: resp.IsHypervisor}, nil
+	return resp.IsHypervisor
 }
 
 //Close Signals the driver to cleanup/close
