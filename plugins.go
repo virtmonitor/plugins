@@ -5,12 +5,17 @@ import (
 	"errors"
 	"io"
 	"log"
+	"os"
 
 	plugin "github.com/hashicorp/go-plugin"
 	driver "github.com/virtmonitor/driver"
 	proto "github.com/virtmonitor/plugins/proto"
 	"google.golang.org/grpc"
 )
+
+func init() {
+	log.SetOutput(os.Stderr)
+}
 
 //Handshake Plugin handshake
 var Handshake = plugin.HandshakeConfig{
