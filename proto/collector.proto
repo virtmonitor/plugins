@@ -98,6 +98,19 @@ message UnblockSMTP {
     string value = 3;
 }
 
+message Empty {}
+
+message NameResponse {
+    string name = 1;
+}
+
+message DetectResponse {
+    bool isHypervisor = 1;
+}
+
 service Driver {
     rpc Collect(CollectRequest) returns (stream Domain);
+    rpc Close(Empty) returns (Empty);
+    rpc Name(Empty) returns (NameResponse);
+    rpc Detect(Empty) returns (DetectResponse);
 }
