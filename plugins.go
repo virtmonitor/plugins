@@ -75,6 +75,9 @@ func (m *DriverClient) Collect(cpu, disk, network bool) ([]*proto.Domain, error)
 	return domains, nil
 }
 
+//Close Signals the driver to cleanup/close
+func (m *DriverClient) Close() {}
+
 //DriverServer Server struct
 type DriverServer struct {
 	Impl driver.Driver
