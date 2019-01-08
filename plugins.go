@@ -75,6 +75,22 @@ func (m *DriverClient) Collect(cpu, disk, network bool) ([]*proto.Domain, error)
 	return domains, nil
 }
 
+func (m *DriverClient) Name() (*proto.NameResponse, error) {
+	resp, err := m.client.Name(context.Background(), &proto.Empty{})
+	if err != nil {
+		return nil, err
+	}
+	return &proto.NameResponse{Name: resp.Name}, nil
+}
+
+func (m *DriverClient) Detect() (*proto.DetectResponse, error) {
+	resp, err := m.client.Detect(context.Background(), &proto.Empty{})
+	if err != nil {
+		return nil, err
+	}
+	return &proto.DetectResponse{IsHypervisor: resp.IsHypervisor}, nil
+}
+
 //Close Signals the driver to cleanup/close
 func (m *DriverClient) Close() {}
 
@@ -105,4 +121,16 @@ func (m *DriverServer) Collect(req *proto.CollectRequest, res proto.Driver_Colle
 	}
 
 	return nil
+}
+
+func (m *DriverServer) Name(ctx context.Context, req *proto.Empty) (*proto.NameResponse, error) {
+	return &proto.NameResponse{Name: string(m.Impl.Name())}, nil
+}
+
+func (m *DriverServer) Detect(ctx context.Context, req *proto.Empty) (*proto.DetectResponse, error) {
+	return &proto.DetectResponse{IsHypervisor: m.Impl.Detect()}, nil
+}
+
+func (m *DriverServer) Close(ctx context.Context, req *proto.Empty) (*proto.Empty, error) {
+	return &proto.Empty{}, nil
 }
