@@ -3,6 +3,7 @@ package plugins
 import (
 	"context"
 	"errors"
+	"io"
 	"log"
 	"os"
 
@@ -60,16 +61,12 @@ func (m *DriverClient) Collect(cpu, disk, network bool) (map[driver.DomainID]*dr
 		Network: network,
 	})
 
-	_, err1 := resp.Recv()
-
-	log.Printf("Collect request response: %v => %v => %v\r\n", resp, err, err1)
-
 	if err != nil {
 		log.Printf("Collect request error: %v", err)
 		return nil, err
 	}
 
-	/*var domains []*proto.Domain
+	var domains []*proto.Domain
 
 	for {
 		domain, err := resp.Recv()
@@ -82,10 +79,10 @@ func (m *DriverClient) Collect(cpu, disk, network bool) (map[driver.DomainID]*dr
 		}
 
 		domains = append(domains, domain)
-	}*/
+	}
 
-	domains := make(map[driver.DomainID]*driver.Domain)
-	return domains, nil
+	domainss := make(map[driver.DomainID]*driver.Domain)
+	return domainss, nil
 }
 
 func (m *DriverClient) Name() driver.DomainHypervisor {
