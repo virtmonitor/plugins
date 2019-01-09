@@ -60,7 +60,9 @@ func (m *DriverClient) Collect(cpu, disk, network bool) (map[driver.DomainID]*dr
 		Network: network,
 	})
 
-	log.Printf("Collect request response: %v => %v\r\n", resp, err)
+	_, err1 = resp.Recv()
+
+	log.Printf("Collect request response: %v => %v => %v\r\n", resp, err, err1)
 
 	if err != nil {
 		log.Printf("Collect request error: %v", err)
