@@ -119,7 +119,7 @@ func (m *DriverServer) Collect(req *proto.CollectRequest, res proto.Driver_Colle
 	log.Println("Got collect request")
 	domains, err := m.Impl.Collect(req.Cpu, req.Disk, req.Network)
 
-	err = errors.New("Am I even getting this request to be able to return an error?!")
+	//err = errors.New("Am I even getting this request to be able to return an error?!")
 
 	if err != nil {
 		return err
