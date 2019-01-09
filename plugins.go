@@ -53,6 +53,7 @@ type DriverClient struct {
 
 //Collect Collects domain statistics from underlying plugin interface
 func (m *DriverClient) Collect(cpu, disk, network bool) (map[driver.DomainID]*driver.Domain, error) {
+	log.Printf("Sending collect request: %v %v %v\r\n", cpu, disk, network)
 	resp, err := m.client.Collect(context.Background(), &proto.CollectRequest{
 		Cpu:     cpu,
 		Disk:    disk,
