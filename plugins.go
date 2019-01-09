@@ -114,7 +114,7 @@ type DriverServer struct {
 
 //Collect Collect domain statistics from Impl and stream the results back
 func (m *DriverServer) Collect(req *proto.CollectRequest, res proto.Driver_CollectServer) error {
-	log.Printf("Got collect request\r\n")
+	log.Println("Got collect request")
 	domains, err := m.Impl.Collect(req.Cpu, req.Disk, req.Network)
 
 	if err != nil {
@@ -138,15 +138,16 @@ func (m *DriverServer) Collect(req *proto.CollectRequest, res proto.Driver_Colle
 }
 
 func (m *DriverServer) Name(ctx context.Context, req *proto.Empty) (*proto.NameResponse, error) {
-	//log.Printf("Got name request -> %s\r\n", m.Impl.Name())
+	log.Printf("Got name request -> %s\r\n", m.Impl.Name())
 	return &proto.NameResponse{Name: string(m.Impl.Name())}, nil
 }
 
 func (m *DriverServer) Detect(ctx context.Context, req *proto.Empty) (*proto.DetectResponse, error) {
-	//log.Printf("Got detect request -> %v\r\n", m.Impl.Detect())
+	log.Printf("Got detect request -> %v\r\n", m.Impl.Detect())
 	return &proto.DetectResponse{IsHypervisor: m.Impl.Detect()}, nil
 }
 
 func (m *DriverServer) Close(ctx context.Context, req *proto.Empty) (*proto.Empty, error) {
+	log.Println("Got close request")
 	return &proto.Empty{}, nil
 }
