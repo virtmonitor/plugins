@@ -112,6 +112,7 @@ type DriverServer struct {
 
 //Collect Collect domain statistics from Impl and stream the results back
 func (m *DriverServer) Collect(req *proto.CollectRequest, res proto.Driver_CollectServer) error {
+	log.Printf("Got collect request\r\n")
 	domains, err := m.Impl.Collect(req.Cpu, req.Disk, req.Network)
 
 	if err != nil {
