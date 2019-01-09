@@ -61,6 +61,7 @@ func (m *DriverClient) Collect(cpu, disk, network bool) (map[driver.DomainID]*dr
 	})
 
 	if err != nil {
+		log.Printf("Collect request error: %v", err)
 		return nil, err
 	}
 
@@ -137,12 +138,12 @@ func (m *DriverServer) Collect(req *proto.CollectRequest, res proto.Driver_Colle
 }
 
 func (m *DriverServer) Name(ctx context.Context, req *proto.Empty) (*proto.NameResponse, error) {
-	log.Printf("Got name request -> %s\r\n", m.Impl.Name())
+	//log.Printf("Got name request -> %s\r\n", m.Impl.Name())
 	return &proto.NameResponse{Name: string(m.Impl.Name())}, nil
 }
 
 func (m *DriverServer) Detect(ctx context.Context, req *proto.Empty) (*proto.DetectResponse, error) {
-	log.Printf("Got detect request -> %v\r\n", m.Impl.Detect())
+	//log.Printf("Got detect request -> %v\r\n", m.Impl.Detect())
 	return &proto.DetectResponse{IsHypervisor: m.Impl.Detect()}, nil
 }
 
